@@ -48,7 +48,7 @@ def get_jobs(request, filters: JobFilterSchema = Query()) -> QuerySet[JobPosting
     jobs = filters.filter(jobs)
 
     jobs = jobs.order_by(order)
-    for j in jobs:
+    for j in jobs:  # due to sqlite don't supprot json type need to reformat data
         skills = ast.literal_eval(j.required_skills)
         j.required_skills = skills
     return jobs
@@ -62,6 +62,7 @@ def get_jobs(request, filters: JobFilterSchema = Query()) -> QuerySet[JobPosting
 )
 def get_job(request, job_id: int) -> JobPosting:
     job = get_object_or_404(JobPosting, id=job_id)
+    # due to sqlite don't supprot json type need to reformat data
     job.required_skills = ast.literal_eval(job.required_skills)
     return job
 
@@ -97,6 +98,7 @@ def update_job(request, job_id: int, job_up: JobUpdate):
     for field, value in job_up.model_dump(exclude_unset=True).items():
         setattr(job, field, value)
     job.save()
+    # due to sqlite don't supprot json type need to reformat data
     job.required_skills = ast.literal_eval(job.required_skills)
     return job
 
