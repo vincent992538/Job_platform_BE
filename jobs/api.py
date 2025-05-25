@@ -98,8 +98,10 @@ def update_job(request, job_id: int, job_up: JobUpdate):
     for field, value in job_up.model_dump(exclude_unset=True).items():
         setattr(job, field, value)
     job.save()
-    # due to sqlite don't supprot json type need to reformat data
-    job.required_skills = ast.literal_eval(job.required_skills)
+    if isinstance(job.required_skills, str):  # if not changing skills the format will be str
+        job.required_skills = [
+            skill.strip() for skill in job.required_skills.split(',')
+        ]
     return job
 
 

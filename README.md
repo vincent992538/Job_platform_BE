@@ -84,4 +84,21 @@ To deploy the project to production, we recommend switching the database to Post
 Update your `settings.py` database configuration to use PostgreSQL.
 
 ### Environment Variables
-For security reasons, ensure your sensitive environment variables (e.g., JWT secret keys, database credentials) are configured correctly. You can use `.env` files or services like [django-environ](https://django-environ.readthedocs.io/en/latest/) to manage these settings securely.
+For security reasons, you can use `.env` files or services like [django-environ](https://django-environ.readthedocs.io/en/latest/) to manage these settings securely.
+```env
+# Required for Django to securely sign cookies and tokens
+SECRET_KEY=your-secure-secret-key
+
+# Frontend URL for enabling CORS (e.g., Nuxt app running at localhost:3000)
+CORS_ALLOWED_ORIGINS=http://localhost:3000
+```
+
+
+## Assumptions and Design Decisions
+Due to the time constraint of approximately 4 hours for this project, I chose to use SQLite as the database for its simplicity, instead of PostgreSQL. However, this decision also meant giving up some advanced features such as native array or JSON field support. For instance, storing a list of skills as plain text is a tradeoff resulting from this choice.
+
+During table design, I included `created_at` and `updated_at` fields out of habit, as these are useful for tracking and analyzing data changes. I initially considered implementing an update history log to track `POST`, `PUT`, and `DELETE` operations, but eventually decided against it due to the relatively small scope of the project.
+
+For the `DELETE` operation, I debated whether to implement soft deletes. However, since I already had a `status` field for filtering records, I considered soft deletion somewhat redundant and chose to proceed with hard deletion for simplicity.
+
+To support frontend integration and potential productization, I added support for environment variables and enabled CORS configuration accordingly.
