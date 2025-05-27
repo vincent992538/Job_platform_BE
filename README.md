@@ -20,6 +20,9 @@ The **Job Platform** is a web application that allows users to create, update, d
 1. **Python 3.10+** is required.
 2. Ensure that **Django** and **Django Ninja** are installed.
 3. Ensure taht **pdm** is installed.
+```bash
+pip install pdm
+```
 
 ### 1. Clone the Repository
 
@@ -44,7 +47,13 @@ Make sure to run migrations to set up the database schema:
 pdm run python manage.py migrate
 ```
 
-### 4. Run the application:
+### 4. Create superuser:
+Create a super user to pass authentication
+```bash
+pdm run python manage.py createsuperuser
+```
+
+### 5. Run the application:
 Start the development server:
 
 ```bash
@@ -85,13 +94,7 @@ Update your `settings.py` database configuration to use PostgreSQL.
 
 ### Environment Variables
 For security reasons, you can use `.env` files or services like [django-environ](https://django-environ.readthedocs.io/en/latest/) to manage these settings securely.
-```env
-# Required for Django to securely sign cookies and tokens
-SECRET_KEY=your-secure-secret-key
-
-# Frontend URL for enabling CORS (e.g., Nuxt app running at localhost:3000)
-CORS_ALLOWED_ORIGINS=http://localhost:3000
-```
+can use the `.env.example` as the template copy
 
 
 ## Assumptions and Design Decisions
